@@ -67,20 +67,19 @@
 
 ```mermaid
 flowchart LR
-    A[业务数据<br/>CSV / XLSX] --> B[generate_report.py<br/>指标统计]
-    B --> C{LLM 可用?}
-    C -- Claude --> D[大模型周报总结]
-    C -- 无 Key / 失败 --> E[本地模板兜底]
-    D --> F[weekly_report.json<br/>weekly_trend.png]
+    A["业务数据<br/>CSV/XLSX"] --> B["指标统计<br/>generate_report.py"]
+    B --> C{"LLM 可用?"}
+    C -->|Claude| D["大模型周报总结"]
+    C -->|Fallback| E["本地模板兜底"]
+    D --> F["weekly_report.json<br/>weekly_trend.png"]
     E --> F
-    F --> G[feishu_webhook_push.py<br/>飞书卡片推送]
-    G --> H[飞书群]
-    H --> I[@机器人 详情]
-    I --> J[feishu_ws_listener.py<br/>长连接监听]
-    J --> K[读取周报并回复关键指标]
-
-    L[OpenClaw Skill] -. 调度 .-> B
-    L -. 调度 .-> G
+    F --> G["飞书卡片推送<br/>feishu_webhook_push.py"]
+    G --> H["飞书群"]
+    H --> I["群内追问：详情"]
+    I --> J["长连接监听<br/>feishu_ws_listener.py"]
+    J --> K["读取周报并回复指标"]
+    L["OpenClaw Skill"] -.-> B
+    L -.-> G
 ```
 
 ---
