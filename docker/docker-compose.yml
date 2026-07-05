@@ -1,0 +1,28 @@
+services:
+  openclaw:
+    build:
+      # build context 指向项目根，让 Dockerfile 能 COPY 到 requirements.txt
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: openclaw-gateway
+    restart: unless-stopped
+    env_file:
+      - ../config/.env
+    volumes:
+      - ../skills:/home/openclaw/workspace/skills:ro
+      - ../scripts:/home/openclaw/workspace/scripts:ro
+      - ../sample_data:/home/openclaw/workspace/sample_data:ro
+      - openclaw-output:/home/openclaw/workspace/output
+    # 只映射到本机回环地址，不暴露到公网；
+    # 远程访问一律走 Tailscale 内网，而不是这里开公网端口。
+    ports:
+      - "127.0.0.1:18789:18789"
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  openclaw-output:
