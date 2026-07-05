@@ -1,0 +1,26 @@
+{
+  "model": {
+    "provider": "anthropic",
+    "name": "claude-sonnet-4-6",
+    "apiKeyEnv": "ANTHROPIC_API_KEY",
+    "fallback": {
+      "provider": "ollama",
+      "name": "qwen2.5:7b",
+      "baseUrl": "http://127.0.0.1:11434"
+    }
+  },
+  "gateway": {
+    "bindHost": "127.0.0.1",
+    "bindPort": 18789
+  },
+  "workspace": {
+    "path": "~/.openclaw/workspace"
+  },
+  "skills": {
+    "sources": ["workspace", "user", "builtin"]
+  },
+  "heartbeat": {
+    "intervalMinutes": 60,
+    "checklistFile": "HEARTBEAT.md"
+  }
+}
