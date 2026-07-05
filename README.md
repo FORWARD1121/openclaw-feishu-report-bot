@@ -66,20 +66,57 @@
 ## 工作流总览
 
 ```mermaid
-flowchart LR
-    A["业务数据<br/>CSV/XLSX"] --> B["指标统计<br/>generate_report.py"]
-    B --> C{"LLM 可用?"}
-    C -->|Claude| D["大模型周报总结"]
-    C -->|Fallback| E["本地模板兜底"]
-    D --> F["weekly_report.json<br/>weekly_trend.png"]
-    E --> F
-    F --> G["飞书卡片推送<br/>feishu_webhook_push.py"]
-    G --> H["飞书群"]
-    H --> I["群内追问：详情"]
-    I --> J["长连接监听<br/>feishu_ws_listener.py"]
-    J --> K["读取周报并回复指标"]
-    L["OpenClaw Skill"] -.-> B
-    L -.-> G
+flowchart TB
+    classDef orchestration fill:#F3E8FF,stroke:#7C3AED,stroke-width:1.5px,color:#111827;
+    classDef input fill:#E0F2FE,stroke:#0284C7,stroke-width:1.5px,color:#111827;
+    classDef process fill:#ECFCCB,stroke:#65A30D,stroke-width:1.5px,color:#111827;
+    classDef decision fill:#FEF3C7,stroke:#D97706,stroke-width:1.5px,color:#111827;
+    classDef output fill:#FCE7F3,stroke:#DB2777,stroke-width:1.5px,color:#111827;
+    classDef interact fill:#EDE9FE,stroke:#6366F1,stroke-width:1.5px,color:#111827;
+
+    O["OpenClaw Skill<br/>任务编排与流程触发"]:::orchestration
+
+    subgraph L1["输入层"]
+        A["业务数据<br/>CSV / XLSX"]:::input
+        B["配置文件<br/>config/.env"]:::input
+    end
+
+    subgraph L2["报告生成层"]
+        C["generate_report.py<br/>数据读取与指标统计"]:::process
+        D{"LLM 可用?"}:::decision
+        E["Claude 生成中文总结"]:::process
+        F["本地模板兜底"]:::process
+        G["生成周报产物<br/>weekly_report.json<br/>weekly_trend.png"]:::output
+    end
+
+    subgraph L3["消息分发层"]
+        H["feishu_webhook_push.py<br/>构造飞书卡片"]:::process
+        I["飞书群<br/>周报卡片推送"]:::output
+    end
+
+    subgraph L4["交互反馈层"]
+        J["用户群内追问<br/>生成周报 / 推送 / 详情"]:::interact
+        K["feishu_ws_listener.py<br/>长连接监听消息"]:::interact
+        L["读取周报结果并回复<br/>关键指标 / 详情说明"]:::interact
+    end
+
+    O --> C
+    O --> H
+    A --> C
+    B --> C
+    B --> H
+    B --> K
+    C --> D
+    D -->|Yes| E
+    D -->|No| F
+    E --> G
+    F --> G
+    G --> H
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> I
 ```
 
 ---
