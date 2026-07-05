@@ -18,7 +18,7 @@
 
 ## 项目定位
 
-`openclaw-feishu-report-bot` 是一个可部署、可验收的自动化办公 Agent Demo。
+`openclaw-feishu-report-bot` 是一个开箱即用的自动化办公 Agent 工作流项目。
 
 它把常见办公流程中的 **数据处理 → 指标统计 → LLM 总结 → 图表生成 → 飞书推送 → 群内追问 → 安全部署** 串成一条完整链路，适合用于：
 
@@ -28,7 +28,7 @@
 - 飞书 Webhook / WebSocket 长连接联调参考
 - 小型业务周报机器人原型
 
-> 当前版本：`0.2.0`。代码结构、配置隔离、健康检查、Docker 文件和验收文档已经整理完成；真实飞书收发与 OpenClaw 调度仍需在配置好凭证的真机环境完成验收。
+项目内置示例数据和完整配置模板，支持先本地运行最小 Demo，再按部署文档接入真实飞书群和 OpenClaw 环境。
 
 ---
 
@@ -187,7 +187,7 @@ cp -r skills/weekly-report ~/.openclaw/workspace/skills/
 → 返回推送结果
 ```
 
-真实运行日志请填写：[docs/OPENCLAW_RUN_LOG.md](docs/OPENCLAW_RUN_LOG.md)
+更多运行记录格式见：[docs/OPENCLAW_RUN_LOG.md](docs/OPENCLAW_RUN_LOG.md)
 
 ---
 
@@ -218,10 +218,10 @@ docker compose logs -f openclaw
 | [QUICKSTART.md](QUICKSTART.md) | 5 分钟跑通最小 Demo |
 | [docs/WORKFLOW.md](docs/WORKFLOW.md) | 业务流程与智能体工作流 |
 | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | 正式部署步骤 |
-| [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) | 交付验收标准 |
+| [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) | 项目验收清单 |
 | [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | 常见错误处理 |
-| [docs/TEST_EVIDENCE.md](docs/TEST_EVIDENCE.md) | 已验证内容与待真机验证项 |
-| [docs/OPENCLAW_RUN_LOG.md](docs/OPENCLAW_RUN_LOG.md) | OpenClaw 调度日志模板 |
+| [docs/TEST_EVIDENCE.md](docs/TEST_EVIDENCE.md) | 测试记录 |
+| [docs/OPENCLAW_RUN_LOG.md](docs/OPENCLAW_RUN_LOG.md) | OpenClaw 运行记录模板 |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | 贡献指南 |
 | [SECURITY.md](SECURITY.md) | 安全说明 |
 
@@ -243,8 +243,8 @@ docker compose logs -f openclaw
 - [ ] 支持更多图表类型
 - [ ] 支持自定义飞书卡片主题
 - [ ] 增加单元测试覆盖
-- [ ] 增加真实 OpenClaw 调度录屏或截图
-- [ ] 补充飞书联调截图与验收日志
+- [ ] 增加多租户/多群配置示例
+- [ ] 增加更多 OpenClaw Skill 工作流示例
 
 ---
 
